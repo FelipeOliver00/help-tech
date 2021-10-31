@@ -1,26 +1,50 @@
 package com.felipe.helptech.domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.felipe.helptech.domain.enums.Perfil;
 
-public abstract class Pessoa {
+@Entity
+public abstract class Pessoa implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String nome;
+	
+	@Column(unique = true)
 	protected String cpf;
+	@Column(unique = true)
 	protected String email;
 	protected String senha;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
 	protected Set<Integer> perfis = new HashSet<>();
+	
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacaoDate = LocalDate.now();
 	
 	public Pessoa() {
 		super();
-		// TODO Auto-generated constructor stub
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Pessoa(Integer id, String nome, String cpf, String email, String senha) {
@@ -30,6 +54,7 @@ public abstract class Pessoa {
 		this.cpf = cpf;
 		this.email = email;
 		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Integer getId() {
@@ -76,7 +101,7 @@ public abstract class Pessoa {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
 
-	public void addPerfi(Perfil perfil) {
+	public void addPerfil(Perfil perfil) {
 		this.perfis.add(perfil.getCodigo());
 	}
 
