@@ -12,9 +12,7 @@ import com.felipe.helptech.domain.enums.Perfil;
 import com.felipe.helptech.domain.enums.Prioridade;
 import com.felipe.helptech.domain.enums.Status;
 import com.felipe.helptech.repositories.ChamadoRepository;
-import com.felipe.helptech.repositories.ClienteRepository;
 import com.felipe.helptech.repositories.PessoaRepository;
-import com.felipe.helptech.repositories.TecnicoRepository;
 
 @Service
 public class DBService {
