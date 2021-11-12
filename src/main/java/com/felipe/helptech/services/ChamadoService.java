@@ -1,0 +1,23 @@
+package com.felipe.helptech.services;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.felipe.helptech.domain.Chamado;
+import com.felipe.helptech.repositories.ChamadoRepository;
+import com.felipe.helptech.services.exceptions.ObjectnotFoundException;
+
+@Service
+public class ChamadoService {
+	
+	@Autowired
+	private ChamadoRepository repository;
+	
+	public Chamado findById(Integer id){
+		Optional<Chamado> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! ID: "+ id));
+	}
+	
+}
